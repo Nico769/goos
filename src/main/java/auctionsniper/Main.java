@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main {
+public class Main implements AuctionEventListener {
     public static final String STATUS_JOINING = "Joining";
     public static final String STATUS_LOST = "Lost";
     public static final String STATUS_BIDDING = "Bidding";
@@ -50,10 +50,15 @@ public class Main {
         return connection;
     }
 
+    @Override
+    public void auctionClosed() {
+        SwingUtilities.invokeLater(() -> ui.showStatus(STATUS_LOST));
+    }
+
     private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),
-                (aChat, message) -> SwingUtilities.invokeLater(() -> ui.showStatus(STATUS_LOST)));
+                new AuctionMessageTranslator(this));
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
     }

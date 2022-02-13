@@ -55,10 +55,17 @@ public class Main implements SniperListener {
         SwingUtilities.invokeLater(() -> ui.showStatus(STATUS_LOST));
     }
 
+    @Override
+    public void sniperBidding() {
+        SwingUtilities.invokeLater(() -> ui.showStatus(STATUS_BIDDING));
+    }
+
     private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
         disconnectWhenUICloses(connection);
+        Auction nullAuction = amount -> {
+        };
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),
-                new AuctionMessageTranslator(new AuctionSniper(this)));
+                new AuctionMessageTranslator(new AuctionSniper(nullAuction, this)));
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
     }

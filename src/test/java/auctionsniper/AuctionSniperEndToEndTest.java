@@ -1,3 +1,6 @@
+package auctionsniper;
+
+import auctionsniper.ApplicationRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

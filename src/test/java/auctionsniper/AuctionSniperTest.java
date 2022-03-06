@@ -6,6 +6,8 @@ import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import static auctionsniper.AuctionEventListener.PriceSource;
+
 class AuctionSniperTest {
 
     @RegisterExtension
@@ -31,7 +33,7 @@ class AuctionSniperTest {
             atLeast(1).of(sniperListener).sniperBidding();
         }});
 
-        sniper.currentPrice(price, increment);
+        sniper.currentPrice(price, increment, PriceSource.FROM_SNIPER);
     }
 
 

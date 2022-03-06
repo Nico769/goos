@@ -1,6 +1,5 @@
 package auctionsniper;
 
-import auctionsniper.ApplicationRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,7 @@ class AuctionSniperEndToEndTest {
         auction.startSellingItem();
         application.startBiddingIn(auction);
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
-        auction.reportPrice(1000,98,"other bidder");
+        auction.reportPrice(1000, 98, "other bidder");
         application.hasShownSniperIsBidding();
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
         auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
@@ -42,6 +41,7 @@ class AuctionSniperEndToEndTest {
         auction.announceClosed();
         application.showsSniperHasWonAuction();
     }
+
     // Additional cleanup after each test is run
     @AfterEach
     void stopAuction() {

@@ -23,6 +23,7 @@ class AuctionSniperTest {
         context.checking(new Expectations() {{
             atLeast(1).of(sniperListener).sniperLost();
         }});
+
         sniper.auctionClosed();
     }
 
@@ -35,7 +36,22 @@ class AuctionSniperTest {
             atLeast(1).of(sniperListener).sniperLost();
             when(sniperState.is("bidding"));
         }});
+
         sniper.currentPrice(123, 45, PriceSource.FROM_OTHER_BIDDER);
+        sniper.auctionClosed();
+    }
+
+    @Test
+    void reportsWonIfAuctionClosesWhenWinning() {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperWinning();
+            then(sniperState.is("winning"));
+            atLeast(1).of(sniperListener).sniperWon();
+            when(sniperState.is("winning"));
+        }});
+
+        sniper.currentPrice(123, 45, PriceSource.FROM_SNIPER);
         sniper.auctionClosed();
     }
 

@@ -42,6 +42,34 @@ class AuctionSniperTest {
     }
 
     @Test
+    void reportsWinningIfBidIsInFavorOfSniperWhenBidding() {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperBidding();
+            then(sniperState.is("bidding"));
+            atLeast(1).of(sniperListener).sniperWinning();
+            when(sniperState.is("bidding"));
+        }});
+
+        sniper.currentPrice(123, 45, PriceSource.FROM_OTHER_BIDDER);
+        sniper.currentPrice(123, 45, PriceSource.FROM_SNIPER);
+    }
+
+    @Test
+    void reportsBiddingIfBidIsNotInFavorOfSniperWhenWinning() {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperWinning();
+            then(sniperState.is("winning"));
+            atLeast(1).of(sniperListener).sniperBidding();
+            when(sniperState.is("winning"));
+        }});
+
+        sniper.currentPrice(123, 45, PriceSource.FROM_SNIPER);
+        sniper.currentPrice(123, 45, PriceSource.FROM_OTHER_BIDDER);
+    }
+
+    @Test
     void reportsWonIfAuctionClosesWhenWinning() {
         context.checking(new Expectations() {{
             ignoring(auction);

@@ -15,7 +15,8 @@ class AuctionSniperTest {
     public final Mockery context = new JUnit5Mockery();
     private final SniperListener sniperListener = context.mock(SniperListener.class);
     private final Auction auction = context.mock(Auction.class);
-    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
+    private final String ITEM_ID = "";
+    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
     private final States sniperState = context.states("sniper");
 
     @Test
@@ -31,7 +32,7 @@ class AuctionSniperTest {
     void reportsLostIfAuctionClosesWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding();
+            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
             then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperLost();
             when(sniperState.is("bidding"));
@@ -45,7 +46,7 @@ class AuctionSniperTest {
     void reportsWinningIfBidIsInFavorOfSniperWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding();
+            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
             then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperWinning();
             when(sniperState.is("bidding"));
@@ -61,7 +62,7 @@ class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperWinning();
             then(sniperState.is("winning"));
-            atLeast(1).of(sniperListener).sniperBidding();
+            atLeast(1).of(sniperListener).sniperBidding(with(any(SniperState.class)));
             when(sniperState.is("winning"));
         }});
 
@@ -87,9 +88,10 @@ class AuctionSniperTest {
     void bidsHigherAndReportsBiddingWhenNewPriceArrives() {
         final int price = 1001;
         final int increment = 25;
+        final int bid = price + increment;
         context.checking(new Expectations() {{
-            oneOf(auction).bid(price + increment);
-            atLeast(1).of(sniperListener).sniperBidding();
+            oneOf(auction).bid(bid);
+            atLeast(1).of(sniperListener).sniperBidding(new SniperState(ITEM_ID, price, bid));
         }});
 
         sniper.currentPrice(price, increment, PriceSource.FROM_OTHER_BIDDER);

@@ -4,8 +4,8 @@ import javax.swing.table.AbstractTableModel;
 
 public class SnipersTableModel extends AbstractTableModel {
 
-    private static final SniperState STARTING_UP = new SniperState("", 0, 0);
-    private SniperState sniperState = STARTING_UP;
+    private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0);
+    private SniperSnapshot sniperSnapshot = STARTING_UP;
     private String statusText = Main.STATUS_JOINING;
 
     @Override
@@ -25,10 +25,10 @@ public class SnipersTableModel extends AbstractTableModel {
         // because the compiler implicitly provides the default case for you.
         // See here for more info: https://openjdk.java.net/jeps/361
         return switch (Column.at(columnIndex)) {
-            case ITEM_IDENTIFIER -> sniperState.itemId;
-            case LAST_PRICE -> sniperState.lastPrice;
-            case LAST_BID -> sniperState.lastBid;
-            case SNIPER_STATUS -> statusText;
+            case ITEM_IDENTIFIER -> sniperSnapshot.itemId;
+            case LAST_PRICE -> sniperSnapshot.lastPrice;
+            case LAST_BID -> sniperSnapshot.lastBid;
+            case SNIPER_STATE -> statusText;
         };
     }
 
@@ -37,8 +37,8 @@ public class SnipersTableModel extends AbstractTableModel {
         fireTableRowsUpdated(0, 0);
     }
 
-    public void sniperStatusChanged(SniperState newSniperState, String newStatusText) {
-        sniperState = newSniperState;
+    public void sniperStatusChanged(SniperSnapshot newSniperSnapshot, String newStatusText) {
+        sniperSnapshot = newSniperSnapshot;
         setStatusText(newStatusText);
     }
 }

@@ -32,7 +32,7 @@ class AuctionSniperTest {
     void reportsLostIfAuctionClosesWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
+            allowing(sniperListener).sniperBidding(with(any(SniperSnapshot.class)));
             then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperLost();
             when(sniperState.is("bidding"));
@@ -46,7 +46,7 @@ class AuctionSniperTest {
     void reportsWinningIfBidIsInFavorOfSniperWhenBidding() {
         context.checking(new Expectations() {{
             ignoring(auction);
-            allowing(sniperListener).sniperBidding(with(any(SniperState.class)));
+            allowing(sniperListener).sniperBidding(with(any(SniperSnapshot.class)));
             then(sniperState.is("bidding"));
             atLeast(1).of(sniperListener).sniperWinning();
             when(sniperState.is("bidding"));
@@ -62,7 +62,7 @@ class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperWinning();
             then(sniperState.is("winning"));
-            atLeast(1).of(sniperListener).sniperBidding(with(any(SniperState.class)));
+            atLeast(1).of(sniperListener).sniperBidding(with(any(SniperSnapshot.class)));
             when(sniperState.is("winning"));
         }});
 
@@ -91,7 +91,7 @@ class AuctionSniperTest {
         final int bid = price + increment;
         context.checking(new Expectations() {{
             oneOf(auction).bid(bid);
-            atLeast(1).of(sniperListener).sniperBidding(new SniperState(ITEM_ID, price, bid));
+            atLeast(1).of(sniperListener).sniperBidding(new SniperSnapshot(ITEM_ID, price, bid));
         }});
 
         sniper.currentPrice(price, increment, PriceSource.FROM_OTHER_BIDDER);

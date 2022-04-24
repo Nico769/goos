@@ -7,7 +7,8 @@ public class SnipersTableModel extends AbstractTableModel {
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private SniperSnapshot sniperSnapshot = STARTING_UP;
     private String statusText = Main.STATUS_JOINING;
-    private static final String[] STATUS_TEXT = {Main.STATUS_JOINING, Main.STATUS_BIDDING, Main.STATUS_WINNING};
+    private static final String[] STATUS_TEXT = {Main.STATUS_JOINING, Main.STATUS_BIDDING, Main.STATUS_WINNING,
+            Main.STATUS_WON, Main.STATUS_LOST};
 
     @Override
     public int getRowCount() {
@@ -31,11 +32,6 @@ public class SnipersTableModel extends AbstractTableModel {
             case LAST_BID -> sniperSnapshot.lastBid;
             case SNIPER_STATE -> statusText;
         };
-    }
-
-    public void setStatusText(String newStatusText) {
-        statusText = newStatusText;
-        fireTableRowsUpdated(0, 0);
     }
 
     public void sniperStateChanged(SniperSnapshot newSniperSnapshot) {

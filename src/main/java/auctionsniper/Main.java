@@ -81,19 +81,5 @@ public class Main {
         public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
             SwingUtilities.invokeLater(() -> ui.sniperStateChanged(sniperSnapshot));
         }
-
-        @Override
-        public void sniperLost() {
-            showStatus(STATUS_LOST);
-        }
-
-        @Override
-        public void sniperWon() {
-            showStatus(STATUS_WON);
-        }
-
-        private void showStatus(final String status) {
-            SwingUtilities.invokeLater(() -> ui.showStatus(status));
-        }
     }
 }

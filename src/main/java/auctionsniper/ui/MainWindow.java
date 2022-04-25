@@ -2,14 +2,17 @@ package auctionsniper.ui;
 
 import auctionsniper.Main;
 import auctionsniper.SniperSnapshot;
+import auctionsniper.SniperState;
 import auctionsniper.SnipersTableModel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+import static auctionsniper.SnipersTableModel.textFor;
+
 public class MainWindow extends JFrame {
-    private final JLabel sniperStatus = createLabel(Main.STATUS_JOINING);
+    private final JLabel sniperStatus = createLabel(textFor(SniperState.JOINING));
     private final SnipersTableModel snipers = new SnipersTableModel();
 
     public MainWindow() {

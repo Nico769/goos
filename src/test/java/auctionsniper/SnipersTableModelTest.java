@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import static auctionsniper.SnipersTableModel.textFor;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +44,7 @@ class SnipersTableModelTest {
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
         assertColumnEquals(Column.LAST_PRICE, 555);
         assertColumnEquals(Column.LAST_BID, 666);
-        assertColumnEquals(Column.SNIPER_STATE, Main.STATUS_BIDDING);
+        assertColumnEquals(Column.SNIPER_STATE, textFor(SniperState.BIDDING));
     }
 
     private void assertColumnEquals(Column column, Object expected) {

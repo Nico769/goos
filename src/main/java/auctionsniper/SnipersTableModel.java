@@ -5,10 +5,8 @@ import javax.swing.table.AbstractTableModel;
 public class SnipersTableModel extends AbstractTableModel {
 
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
-    private SniperSnapshot sniperSnapshot = STARTING_UP;
-    private String statusText = Main.STATUS_JOINING;
-    private static final String[] STATUS_TEXT = {Main.STATUS_JOINING, Main.STATUS_BIDDING, Main.STATUS_WINNING,
-            Main.STATUS_WON, Main.STATUS_LOST};
+    private SniperSnapshot snapshot = STARTING_UP;
+    private static final String[] STATUS_TEXT = {"Joining", "Bidding", "Winning", "Won", "Lost"};
 
     @Override
     public int getRowCount() {
@@ -27,16 +25,19 @@ public class SnipersTableModel extends AbstractTableModel {
         // because the compiler implicitly provides the default case for you.
         // See here for more info: https://openjdk.java.net/jeps/361
         return switch (Column.at(columnIndex)) {
-            case ITEM_IDENTIFIER -> sniperSnapshot.itemId;
-            case LAST_PRICE -> sniperSnapshot.lastPrice;
-            case LAST_BID -> sniperSnapshot.lastBid;
-            case SNIPER_STATE -> statusText;
+            case ITEM_IDENTIFIER -> snapshot.itemId;
+            case LAST_PRICE -> snapshot.lastPrice;
+            case LAST_BID -> snapshot.lastBid;
+            case SNIPER_STATE -> textFor(snapshot.state);
         };
     }
 
-    public void sniperStateChanged(SniperSnapshot newSniperSnapshot) {
-        sniperSnapshot = newSniperSnapshot;
-        statusText = STATUS_TEXT[newSniperSnapshot.state.ordinal()];
+    public void sniperStateChanged(SniperSnapshot newSnapshot) {
+        snapshot = newSnapshot;
         fireTableRowsUpdated(0, 0);
+    }
+
+    public static String textFor(SniperState state) {
+        return STATUS_TEXT[state.ordinal()];
     }
 }

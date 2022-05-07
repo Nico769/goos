@@ -6,7 +6,7 @@ public class SnipersTableModel extends AbstractTableModel {
 
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private SniperSnapshot snapshot = STARTING_UP;
-    private static final String[] STATUS_TEXT = {"Joining", "Bidding", "Winning", "Won", "Lost"};
+    private static final String[] STATUS_TEXT = {"Joining", "Bidding", "Winning", "Lost", "Won"};
 
     @Override
     public int getRowCount() {
@@ -20,16 +20,7 @@ public class SnipersTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        // The book suggests that a default case is needed but, since Java 14,
-        // this is redundant when the switch statement deals with Enums,
-        // because the compiler implicitly provides the default case for you.
-        // See here for more info: https://openjdk.java.net/jeps/361
-        return switch (Column.at(columnIndex)) {
-            case ITEM_IDENTIFIER -> snapshot.itemId;
-            case LAST_PRICE -> snapshot.lastPrice;
-            case LAST_BID -> snapshot.lastBid;
-            case SNIPER_STATE -> textFor(snapshot.state);
-        };
+        return Column.at(columnIndex).valueIn(snapshot);
     }
 
     public void sniperStateChanged(SniperSnapshot newSnapshot) {

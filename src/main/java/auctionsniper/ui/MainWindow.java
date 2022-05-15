@@ -1,7 +1,6 @@
 package auctionsniper.ui;
 
 import auctionsniper.Main;
-import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import auctionsniper.SnipersTableModel;
 
@@ -13,10 +12,12 @@ import static auctionsniper.SnipersTableModel.textFor;
 
 public class MainWindow extends JFrame {
     private final JLabel sniperStatus = createLabel(textFor(SniperState.JOINING));
-    private final SnipersTableModel snipers = new SnipersTableModel();
+    private final SnipersTableModel snipers;
 
-    public MainWindow() {
+    public MainWindow(SnipersTableModel snipers) {
         super("Auction sniper");
+        // The model must be assigned here, before creating the JTable
+        this.snipers = snipers;
         setName(Main.MAIN_WINDOW_NAME);
         fillContentPane(makeSnipersTable());
         add(sniperStatus);
@@ -43,9 +44,5 @@ public class MainWindow extends JFrame {
         final JTable snipersTable = new JTable(snipers);
         snipersTable.setName(Main.SNIPERS_TABLE_NAME);
         return snipersTable;
-    }
-
-    public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
-        snipers.sniperStateChanged(sniperSnapshot);
     }
 }

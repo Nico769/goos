@@ -23,12 +23,13 @@ public class Main {
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
     private static final int ARG_ITEM_ID = 3;
+    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
     @SuppressWarnings("unused")
     private Chat notToBeGCd;
 
     public Main() throws Exception {
-        startUserInterface();
+        SwingUtilities.invokeAndWait(() -> ui = new MainWindow(snipers));
     }
 
     public static void main(String... args) throws Exception {
@@ -47,18 +48,14 @@ public class Main {
         return connection;
     }
 
-    private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
+    private void joinAuction(XMPPConnection connection, String itemId) {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection), null);
         this.notToBeGCd = chat;
         Auction auction = new XMPPAuction(chat);
         chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(itemId, auction,
-                new SniperStateDisplayer())));
+                new SwingThreadSniperListener(snipers))));
         auction.join();
-    }
-
-    private void startUserInterface() throws Exception {
-        SwingUtilities.invokeAndWait(() -> ui = new MainWindow());
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
@@ -70,10 +67,16 @@ public class Main {
         });
     }
 
-    public class SniperStateDisplayer implements SniperListener {
+    public static class SwingThreadSniperListener implements SniperListener {
+        private final SniperListener delegate;
+
+        public SwingThreadSniperListener(SniperListener delegate) {
+            this.delegate = delegate;
+        }
+
         @Override
         public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
-            SwingUtilities.invokeLater(() -> ui.sniperStateChanged(sniperSnapshot));
+            SwingUtilities.invokeLater(() -> delegate.sniperStateChanged(sniperSnapshot));
         }
     }
 }

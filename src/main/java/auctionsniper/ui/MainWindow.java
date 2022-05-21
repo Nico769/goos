@@ -11,14 +11,18 @@ import java.awt.*;
 import static auctionsniper.SnipersTableModel.textFor;
 
 public class MainWindow extends JFrame {
+    public static final String APPLICATION_TITLE = "Auction Sniper";
+    public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
+    public static final String SNIPERS_TABLE_NAME = "Snipers Table";
+
     private final JLabel sniperStatus = createLabel(textFor(SniperState.JOINING));
     private final SnipersTableModel snipers;
 
     public MainWindow(SnipersTableModel snipers) {
-        super("Auction sniper");
+        super(APPLICATION_TITLE);
         // The model must be assigned here, before creating the JTable
         this.snipers = snipers;
-        setName(Main.MAIN_WINDOW_NAME);
+        setName(MAIN_WINDOW_NAME);
         fillContentPane(makeSnipersTable());
         add(sniperStatus);
         pack();
@@ -42,7 +46,7 @@ public class MainWindow extends JFrame {
 
     private JTable makeSnipersTable() {
         final JTable snipersTable = new JTable(snipers);
-        snipersTable.setName(Main.SNIPERS_TABLE_NAME);
+        snipersTable.setName(SNIPERS_TABLE_NAME);
         return snipersTable;
     }
 }

@@ -10,8 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Main {
-    public static final String MAIN_WINDOW_NAME = "Auction Sniper Name";
-    public static final String SNIPERS_TABLE_NAME = "Snipers Table";
     public static final String SNIPER_STATUS_NAME = "sniper status";
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";

@@ -1,5 +1,7 @@
 package auctionsniper;
 
+import auctionsniper.ui.MainWindow;
+
 import static auctionsniper.SnipersTableModel.textFor;
 
 public class ApplicationRunner {
@@ -26,6 +28,8 @@ public class ApplicationRunner {
         thread.start();
         // 1 second timeout for finding frames and components
         driver = new AuctionSniperDriver(1000);
+        driver.hasTitle(MainWindow.APPLICATION_TITLE);
+        driver.hasColumnTitles();
         driver.showsSniperStatus(textFor(SniperState.JOINING));
 
     }

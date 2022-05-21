@@ -34,6 +34,13 @@ class SnipersTableModelTest {
     }
 
     @Test
+    void setsUpColumnHeadings() {
+        for (Column column : Column.values()) {
+            assertEquals(column.name, model.getColumnName(column.ordinal()));
+        }
+    }
+
+    @Test
     void setsSniperValuesInColumns() {
         context.checking(new Expectations() {{
             oneOf(listener).tableChanged(with(aRowChangedEvent()));

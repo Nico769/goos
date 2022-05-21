@@ -2,7 +2,7 @@ package auctionsniper;
 
 import javax.swing.table.AbstractTableModel;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener{
+public class SnipersTableModel extends AbstractTableModel implements SniperListener {
 
     private static final SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
     private SniperSnapshot snapshot = STARTING_UP;
@@ -21,6 +21,11 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return Column.at(columnIndex).valueIn(snapshot);
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return Column.at(column).name;
     }
 
     @Override

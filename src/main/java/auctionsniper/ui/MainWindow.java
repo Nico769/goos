@@ -1,6 +1,7 @@
 package auctionsniper.ui;
 
 import auctionsniper.SnipersTableModel;
+import auctionsniper.UserRequestListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,5 +48,9 @@ public class MainWindow extends JFrame {
         controls.add(joinAuctionButton);
 
         return controls;
+    }
+
+    public void addUserRequestListener(UserRequestListener listener) {
+
     }
 }
